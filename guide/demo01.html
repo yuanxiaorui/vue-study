@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{msg}}
+        <span :title="titleText">鼠标悬停几秒查看title</span>
+        <ul>
+            <li v-for="item in todos">
+                {{item.text}}
+            </li>
+        </ul>
+        <p v-on:click="reverseMsg">{{msg}}</p>
+        <ol>
+            <todo-item v-for="(item, index) in todos" :todo="item" :key="index"></todo-item>
+        </ol>
+    </div>
+    <script>
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: '<li>{{item.text}}</li>'
+        })
+        var app = new Vue({
+            el: '#app',
+            data: {
+                msg: 'hello',
+                titleText: 'hhhhh',
+                todos: [
+                    {'text':'vue'},
+                    {'text': 'js'},
+                    {'text': 'css'}
+                ]
+            },
+            methods: {
+                reverseMsg () {
+                    return this.msg = this.msg.split('').reverse().join('')
+                }
+            }
+        })
+    </script>
+</body>
+</html>
