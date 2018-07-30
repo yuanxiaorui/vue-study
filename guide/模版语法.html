@@ -18,8 +18,18 @@
         <ul>
             <li is="todo-item" v-for="(item,index) in todos" :key="item.id" :title="item.title" @remove="remove(index)"></li>
         </ul>
+        <table>
+            <!-- <blog-post-row></blog-post-row> -->
+            <tr is="blog-post-row"></tr>
+          </table>
     </div>
+    <script type="text/x-template">
+    
+    </script>
     <script>
+        Vue.component('blog-post-row', {
+            template: '<tr><td>table content!</td></tr>'
+        })
         Vue.component('todo-item', {
             template:'<li>{{title}}<button @click="$emit(\'remove\')">Remove</button></li>',
             props:['title']

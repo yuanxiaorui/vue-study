@@ -5,6 +5,7 @@
   created： 在created的时候数据已经和data属性进行绑定，此时还是没有el选项
 
 #语法
+vue init webpack my-project
  {{}}文本插值法
  v-bind指令  简写: eg: :href="url"
  v-if
