@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Key用法</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+    .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+    }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p>参考地址：</p>
+        <p>1、https://juejin.im/post/5aae19aa6fb9a028d4445d1a</p>
+        <p>2、https://calendar.perfplanet.com/2013/diff/</p>
+        <p>3、https://github.com/livoras/blog/issues/13</p>
+        <p>4、https://github.com/TimRChen/Vue-v-for-explor#vue-20-v-for-响应式key-index及itemid参数对v-bindkey值造成差异研究</p>
+        <p>https://blog.csdn.net/m6i37jk/article/details/78140159</p>
+        <h1>key用法：</h1>
+        <p>数据类型：number | string</p>
+        <p>key属性为元素添加了一个唯一身份标识符之后，当数据改变，Vue底层通过对比能够更快的获取到更新的内容并显示到页面上</p>
+        <p>
+            key的特殊属性主要用在Vue的虚拟DOM算法，在新旧nodes对比时辨识VNodes。如果不使用
+            key,Vue会使用一种最大限度减少动态元素并且尽可能尝试修复/再利用相同类型元素的算法。
+            使用key，它会基于key的变化重新排列元素顺序，并且会移除key不存在的元素
+        </p>
+        <p>有相同父元素的子元素必须有独特的key,重复的key会造成渲染错误</p>
+
+        <!-- v-if中用 key 管理可复用的元素 -->
+        <template v-if="loginType === 'username'">
+            <label>Username</label>
+            <input placeholder="Enter your username" key="username-input">
+        </template>
+        <template v-else>
+            <label>Email</label>
+            <input placeholder="Enter your email address" key="email-input">
+        </template>
+        <button @click="changeLogin">改变登录方式</button>
+
+
+
+        <!-- 如果不写:key修改msgs数据只会触发 beforeUpdate和updated生命周期钩子-->
+        <hello :msg="msgs"></hello>
+        <!-- 如果写:key修改msgs数据会完整地触发组件的生命周期钩子 -->
+        <hello :msg="msgs2" :key="msgs2"></hello>
+
+        <!-- 当 text 发生改变时，<span> 会随时被更新，因此会触发过渡。 -->
+        <transition name="fade">
+        <span :key="text">{{ text }}</span>
+        </transition>
+    </div>
+    <script>
+        Vue.component('Hello', {
+            props: ['msg'],
+            template: '<p>{{msg}}</p>',
+            beforeCreate: function(){
+                console.log('beforeCreate执行了！')
+            },
+            created: function(){
+                console.log('created执行了！')
+            },
+            beforeMount: function(){
+                console.log('beforeMount执行了！')
+            },
+            mounted: function(){
+                console.log('mounted执行了！')
+            },
+            beforeUpdate: function() {
+                console.log('beforeUpdate执行了！')
+            },
+            updated:function() {
+                console.log('updated执行了！')
+            }
+        })
+        var app = new Vue({
+            el:'#app',
+            data: {
+                msgs:'message',
+                msgs2:'message2',
+                text:'dddddddd',
+                loginType: 'username'
+            },
+            methods: {
+                changeLogin() {
+                    if (this.loginType==='username') {
+                        this.loginType = 'email'
+                    } else {
+                        this.loginType = 'username'
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

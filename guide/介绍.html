@@ -18,13 +18,13 @@
         </ul>
         <p v-on:click="reverseMsg">{{msg}}</p>
         <ol>
-            <todo-item v-for="(item, index) in todos" :todo="item" :key="index"></todo-item>
+            <todo-item v-for="(item, index) in todos" :todo="item" :key="item.id"></todo-item>
         </ol>
     </div>
     <script>
         Vue.component('todo-item', {
             props: ['todo'],
-            template: '<li>{{item.text}}</li>'
+            template: '<li>{{todo.text}}</li>'
         })
         var app = new Vue({
             el: '#app',
@@ -32,9 +32,9 @@
                 msg: 'hello',
                 titleText: 'hhhhh',
                 todos: [
-                    {'text':'vue'},
-                    {'text': 'js'},
-                    {'text': 'css'}
+                    {'id':1,'text':'vue'},
+                    {'id':2,'text': 'js'},
+                    {'id':3,'text': 'css'}
                 ]
             },
             methods: {
