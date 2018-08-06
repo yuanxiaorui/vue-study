@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+       <child :msg="msg" v-on:getchildmsg="getChildMsgFun"></child>
+    </div>
+    <script>
+    var Child = {
+        template: '<div>{{msg}}<button v-on:click="clickEvent">点击将子组件的数据传给父组件</button></div>',
+        props: { // 父->子传参
+            msg: {
+                type: String,
+                required: true
+            }
+        },
+        data() {
+            return {
+                childMessage: '我是来自子组件的message'
+            }
+        },
+        methods: {
+            clickEvent () {
+                // 子->父传参
+                this.$emit('getchildmsg',this.childMessage)
+            }
+        },
+        mounted() {
+            //使用$parent可以访问父组件的数据
+            console.log(this.$parent)
+        }
+    }
+    
+    var app = new Vue({
+        el: '#app',
+        components:{ //局部组件注册
+            Child
+        },
+        data: {
+            msg: '我是父组件的message'
+        },
+        methods: {
+            getChildMsgFun(msg) {
+                console.log('msg:',msg)
+            }
+        },
+        mounted() {
+            // 使用$children可以在父组件中访问子组件。
+            console.log(this.$children)
+        }
+    })
+    </script>
+</body>
+</html>

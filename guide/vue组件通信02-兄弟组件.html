@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+       <component-a></component-a>
+       <hr />
+       <component-b></component-b>
+    </div>
+    <script>
+    var bus = new Vue()
+    Vue.component('component-a', {
+        template:'<div><span>组件A：</span><button  @click="sendDataFromA">向组件B发送组件A的数据</button></div>',
+        data() {
+            return {
+                data1:'组件A的数据'
+            }
+        },
+        methods: {
+            sendDataFromA() {
+                bus.$emit('sendDataFromA',this.data1)
+            }
+        }
+    })
+    Vue.component('component-b', {
+        template:'<div>组件B：<p>从组件A接收的字符串参数:{{msg}}</p></div>',
+        data() {
+            return {
+                msg:'默认值'
+            }
+        },
+        mounted() {
+            var self = this
+            bus.$on('sendDataFromA',function(data){
+                self.msg = data
+            })
+        }
+    })
+    var app = new Vue({
+        el: '#app'
+    })
+    </script>
+</body>
+</html>
