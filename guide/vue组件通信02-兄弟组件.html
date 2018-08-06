@@ -9,11 +9,18 @@
 </head>
 <body>
     <div id="app">
+        <p>示例1：</p>
        <component-a></component-a>
        <hr />
        <component-b></component-b>
+
+       <br><br><br>
+       <p>示例2：</p>
+       <inputs></inputs>
+       <todo></todo>
     </div>
     <script>
+    // 示例1 
     var bus = new Vue()
     Vue.component('component-a', {
         template:'<div><span>组件A：</span><button  @click="sendDataFromA">向组件B发送组件A的数据</button></div>',
@@ -42,6 +49,76 @@
             })
         }
     })
+
+
+
+    // 示例2
+    var eventHub = new Vue()
+    // input输入框（）
+    Vue.component('inputs',{
+        template:'<input type="text" @keyup.enter="addTodo" v-model="newTodoText" />',
+        data() {
+            return {
+                newTodoText:''
+            }
+        },
+        methods: {
+            addTodo: function () {
+                eventHub.$emit('add-todo', {id:Math.random(), text: this.newTodoText })
+                this.newTodoText = ''
+            }
+        }
+    })
+    // 删除按钮
+    var deleteButton = {
+        template:'<button @click="deleteTodo(id)">删除</button>',
+        props:[
+            'id'
+        ],
+        methods: {
+            deleteTodo: function (id) {
+                eventHub.$emit('delete-todo', id)
+            }
+        }
+    }
+    // todo列表
+    Vue.component('todo',{
+        template:'<ol><li v-for="todo in todos">{{todo.text}}<delete-button :id="todo.id"></delete-button></li></ol>',
+        data() {
+            return {
+                todos:[
+                    {'id':1,'text':'js'},
+                    {'id':2,'text':'vue'},
+                    {'id':3,'text':'css'}
+                ]
+            }
+        },
+        components: {
+            'delete-button':deleteButton
+        },
+        created: function () {
+            eventHub.$on('add-todo', this.addTodo)
+            eventHub.$on('delete-todo', this.deleteTodo)
+        },
+        // 最好在组件销毁前
+        // 清除事件监听
+        beforeDestroy: function () {
+            eventHub.$off('add-todo', this.addTodo)
+            eventHub.$off('delete-todo', this.deleteTodo)
+        },
+        methods: {
+            addTodo: function (newTodo) {
+                this.todos.push(newTodo)
+            },
+            deleteTodo: function (todoId) {
+                this.todos = this.todos.filter(function (todo) {
+                    return todo.id !== todoId
+                })
+            }
+        }
+    })
+
+
     var app = new Vue({
         el: '#app'
     })
