@@ -13,6 +13,19 @@
         <tagname02></tagname02>
         <tagname03></tagname03>
     </div>
+
+    <!-- 
+        测试全局组件和局部组件的区别1：
+        全局注册组件：它们在注册之后可以用在任何新创建的 Vue 根实例 (new Vue) 的模板中。
+        tagname01能在#app下渲染,在#app2下渲染 
+        tagname02只能在#app下渲染,在app2下不渲染 
+    -->
+    <div id="app2">
+        <tagname01></tagname01> 
+        <!-- <tagname02></tagname02> -->
+    </div>
+
+
     <script>
     //1、全局组件 
     Vue.component('tagname01',{
@@ -24,9 +37,10 @@
         template: '<div>我是局部组件</div>'
     }
 
-    // 测试全局组件和局部组件的区别，此时在这tagname02无法渲染出来
+    //1、 测试全局组件和局部组件的区别2，在所有子组件中也是如此，也就是说这全局注册的组件在各自内部也都可以相互使用。
+    // 此时在这tagname01是全局注册的可以显示出来，但是tagname02是局部注册的就无法渲染出来
     Vue.component('tagname03',{
-        template: '<div>我是全局组件3<tagname02></tagname02></div>'
+        template: '<div>我是全局组件3<tagname01></tagname01></div>'
     })   
     
     var app = new Vue({
@@ -34,6 +48,9 @@
         components:{ //局部组件注册
             'tagname02': Child
         }
+    })
+    var app2 = new Vue({
+        el:'#app2'
     })
     </script>
 </body>

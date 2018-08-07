@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 1. 字符串模板 -->
+        <custom-component01></custom-component01>
+
+        <!-- 2. 模板字面量 -->
+        <custom-component02></custom-component02>
+
+        <!-- 3. x-template -->
+        <script type="text/x-template" id="checkbox-template">
+            <div class="title">{{this.title}}</div>
+        </script>
+        <custom-component03></custom-component03>
+
+        <!-- 4. 内联模板 -->
+        <custom-component04 inline-template>
+            <div class="title">{{this.title}}</div>
+        </custom-component04>
+
+        <!-- 5.渲染方法(Render) -->
+        <custom-component05></custom-component05>
+
+        <!-- 6.jsx -->
+        <custom-component06></custom-component06>
+    </div>
+    
+    <script>
+        // 1. 字符串模板
+        Vue.component('custom-component01', {
+            template: '<div class="title">{{title}}</div>',
+            data() {
+                return {title: '字符串模板' }
+            }
+        });
+
+        // 2. 模板字面量
+        Vue.component('custom-component02', {
+            template: `
+            <div>
+                <div class="title">{{title}}</div>
+                <div :class="{ checkbox: checkbox}"></div>
+            </div>`,
+            data() {
+                return {title: '模板字面量' ,checkbox: true}
+            }
+        });
+
+        // 3. x-template
+        Vue.component('custom-component03', {
+            template: '#checkbox-template',
+            data() {
+                return {title: 'x-template' }
+            }
+        });
+
+        // 4.内联模板
+        Vue.component('custom-component04', {
+            data(){
+                return {title:'内联模板!'}
+            }
+        })
+
+        // 5.渲染方法(Render)
+        Vue.component('custom-component05', {
+            data(){
+                return {title:'渲染方法(Render)!'}
+            },
+            render(createElement) {
+                return createElement(
+                    'div',
+                    {
+                        attrs: {
+                            'class': 'title'
+                        }
+                    },
+                    [ this.title ]
+                );
+            }
+        })
+
+        // 6.JSX 有问题,需要在webpack构建的脚手架中才生效？？？？？
+        Vue.component('custom-component06', {
+            data(){
+                return {title:'JSX!'}
+            },
+            render() {
+                return <div class="test">{title }</div>
+            }
+        })
+
+        // 7.单文件组件
+        // <template>>
+        //     <div class="title">{{ title }}</div>
+        // </template>
+        // <script>
+        // export default {
+        //     data() {
+        //         return {title: 'Check me' }
+        //     }
+        // }
+        // /script>
+
+        
+        new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+</html>

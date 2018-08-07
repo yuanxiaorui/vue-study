@@ -9,13 +9,13 @@
 </head>
 <body>
     <div id="app">
-       <child :msg="msg" v-on:getchildmsg="getChildMsgFun"></child>
+       <child :my-name="msg" v-on:getchildmsg="getChildMsgFun"></child>
     </div>
     <script>
     var Child = {
-        template: '<div>{{msg}}<button v-on:click="clickEvent">点击将子组件的数据传给父组件</button></div>',
+        template: '<div>{{myName}}<button v-on:click="clickEvent">点击将子组件的数据传给父组件</button></div>',
         props: { // 父->子传参
-            msg: {
+            myName: {
                 type: String,
                 required: true
             }
