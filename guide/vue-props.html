@@ -9,14 +9,88 @@
 </head>
 <body>
     <div id="app">
+        <p>一、prop命名</p>
         <!-- 在 HTML 中是 kebab-case 的 -->
         <blog-post post-title="hello!"></blog-post>
+        <br><br>
+
+
+        <p>二、prop校验</p>
+        <!-- 1、测试->基础的类型检查 -->
+        <!-- <my-component :prop-a="333"></my-component> -->
+
+        <!-- 2、测试->多个可能的类型 -->
+        <!-- <my-component prop-b="多个可能的类型"></my-component> -->
+
+        <!-- 3、测试->必填的字符串 -->
+        <!-- <my-component propC="必填的字符串"></my-component> -->
+
+        <!-- 4、测试->带有默认值的数字 -->
+        <!-- <my-component prop-c="必填的字符串"></my-component> -->
+
+        <!-- 5、测试->带有默认值的对象 -->
+        <!-- <my-component prop-c="必填的字符串"></my-component> -->
+
+        <!-- 6、测试->自定义验证函数 -->
+        <my-component prop-c="必填的字符串" prop-f="success"></my-component>
+
+
+
+
+        <br><br>
+
+
+        <p>三、非 Prop 的特性</p>
+        <component03 data-date-picker="activated"></component03>
     </div>
     <script>
         Vue.component('blog-post', {
             // 在 JavaScript 中是 camelCase 的
             props: ['postTitle'],
             template: '<h3>{{ postTitle }}</h3>'
+        })
+
+        Vue.component('my-component', {
+            template:`<div>
+            <div class="title">类型检查:{{this.propF}}</div>
+            </div>`,
+            props: {
+                // 基础的类型检查 (`null` 匹配任何类型)
+                propA: Number,
+                // 多个可能的类型
+                propB: [String, Number],
+                // 必填的字符串
+                propC: {
+                    type: String,
+                    required: true
+                },
+                // 带有默认值的数字
+                propD: {
+                    type: Number,
+                    default: 100
+                },
+                // 带有默认值的对象
+                propE: {
+                    type: Object,
+                    // 对象或数组且一定会从一个工厂函数返回默认值
+                    default: function () {
+                        return { message: 'hello' }
+                    }
+                },
+                // 自定义验证函数
+                propF: {
+                    validator: function (value) {
+                        // 这个值必须匹配下列字符串中的一个
+                        return ['success', 'warning', 'danger'].indexOf(value) !== -1
+                    }
+                }
+            }
+        })
+        
+        
+        Vue.component('component03',{
+            template:'<div><input type="text" v-bind="$attrs" /></div>',
+            inheritAttrs: false
         })
         new Vue({
             el:'#app'
