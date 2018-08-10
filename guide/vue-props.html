@@ -41,7 +41,7 @@
 
 
         <p>三、非 Prop 的特性</p>
-        <component03 data-date-picker="activated"></component03>
+        <component03 data-date-picker="activated" type="date"></component03>
     </div>
     <script>
         Vue.component('blog-post', {
@@ -88,6 +88,7 @@
         })
         
         
+        // ?????选择行使用$attrs
         Vue.component('component03',{
             template:'<div><input type="text" v-bind="$attrs" /></div>',
             inheritAttrs: false

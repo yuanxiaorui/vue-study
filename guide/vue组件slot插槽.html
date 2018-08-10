@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>1、单个插槽</p>
+        <father-component></father-component>
+        <br><br><br>
+
+
+        <p>2、具名插槽</p>
+        <father-component2></father-component2>
+    </div>
+    <script>
+    //1、单个插槽
+    var Child = {
+        template:`<div class="child">
+                <h5>这里是子组件！！！</h5>
+                <slot></slot>
+            </div>`,    
+    }    
+    Vue.component('father-component',{
+        template:`
+        <div class="father">
+            <h5>我是父组件！！！</h5>
+            <child-component>
+                <p>I'm injected content from the parent!</p>
+                <p>I can still bind to data in the parent's scope, like this! {{myVariable}}</p>
+            </child-component>
+        </div>
+        `,
+        components:{
+            'child-component':Child
+        },
+        data(){
+            return {
+                myVariable: `I'm just a lonely old variable.`
+            }
+        }
+    })
+
+
+
+    //2、具名插槽
+    var Child2 = {
+        template:`
+        <div class="child">
+            <div class="head">
+                <p>我是子组件的头部信息</p>
+                <slot name="head"></slot>
+            </div>
+            <div>
+                <p>我是子组件的content</p>
+                <slot name="content"></slot>
+            </div>
+            <slot name="footer"></slot>
+        </div>
+        `
+    }
+    Vue.component('father-component2',{
+        template:`
+        <div>
+            <h3>这里是父组件</h3>
+            <child-component2>
+                <header slot="head">
+                    我是父组件头部
+                </header>
+                <content slot="content">我是父组件内容</content>
+                <footer slot="footer">我是父组件底部</footer>
+            </child-component2>
+        </div>
+        `,
+        components: {
+            'child-component2':Child2
+        }
+    })
+
+    new Vue({
+        el:'#app'
+    })
+    </script>
+</body>
+</html>
