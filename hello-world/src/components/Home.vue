@@ -1,12 +1,12 @@
 <template>
-  <div class="hello">
-
+  <div class="Home">
+    Home页面
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'Home',
   props: {
     
   }
