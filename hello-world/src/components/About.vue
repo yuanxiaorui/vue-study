@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    About页面
+    About页面<button @click="goBack">点击返回上一步</button>
   </div>
 </template>
 
@@ -9,6 +9,13 @@ export default {
   name: 'About',
   props: {
     
+  },
+  methods: {
+    goBack () {
+      window.history.length > 1
+        ? this.$router.go(-1)
+        : this.$router.push('/')
+    }
   }
 }
 </script>
