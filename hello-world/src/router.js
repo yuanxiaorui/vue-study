@@ -1,47 +1,51 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter)  //vue全局使用Router
 
 // 1. 定义 (路由) 组件。
 // 可以从其他文件 import 进来
 import Home from './components/Home'
 import About from './components/About'
+import News from './components/News'
 
 
 import User from './components/User'
 import UserProfile from './components/UserProfile'
 import UserPosts from './components/UserPosts'
-import UserEmpty from './components/UserEmpty.vue'
 
+import Header from './layout/Header'
+import Content from './layout/Content'
+import Footer from './layout/Footer'
 
 // 2. 定义路由
 // 每个路由应该映射一个组件。
 export default new VueRouter({
     mode: 'history',
-    routes: [
+    routes: [   //配置路由，这里是一个数组
       {
-        path: '/',
+        path: '/',  
         redirect: '/home'
       },
       {
-        path: '/home',
-        name: 'home',
-        component: Home
+        path: '/home',  //链接路径
+        name: 'home', //路由名称
+        component: Home  //对应的组件模板
       },
       {
         path: '/about',
         name: 'about',
         component: About
       },
+      {
+        path: '/news/:newsId/:newsTitle',
+        name: 'news',
+        component: News
+      },
       //示例2： 动态路径参数 以冒号开头
       {
         path:'/user/:id',component:User,
         children: [
-          {
-            path:'',
-            component: UserEmpty
-          },
           {
             // 当 /user/:id/profile 匹配成功，
             // UserProfile 会被渲染在 User 的 <router-view> 中
@@ -55,6 +59,14 @@ export default new VueRouter({
             component: UserPosts
           }
         ]
+      },
+      {
+        path:'/namedview',
+        components: {
+          default: Header,
+          a: Content,
+          b: Footer
+        }
       }
     ]
   })
