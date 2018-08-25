@@ -8,6 +8,7 @@ Vue.use(VueRouter)  //vue全局使用Router
 import Home from './components/Home'
 import About from './components/About'
 import News from './components/News'
+import NewSub from './components/NewSub'
 
 
 import User from './components/User'
@@ -38,9 +39,16 @@ export default new VueRouter({
         component: About
       },
       {
-        path: '/news/:newsId/:newsTitle',
+        path: '/news',
         name: 'news',
-        component: News
+        component: News,
+        children: [
+          {
+          path: '/detail/:newsId',
+          name: 'NewSub',
+          component: NewSub,
+          }
+        ]
       },
       //示例2： 动态路径参数 以冒号开头
       {
@@ -64,8 +72,8 @@ export default new VueRouter({
         path:'/namedview',
         components: {
           default: Header,
-          a: Content,
-          b: Footer
+          content: Content,
+          footer: Footer
         }
       }
     ]

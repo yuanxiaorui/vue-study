@@ -10,7 +10,7 @@
     2、通过router-link中的to传参<br />
       获取参数是：{{$route.params.username}}-{{$route.params.age}}
     <br />
-    3、利用url传递参数，见User.vue  
+    3、利用url传递参数
 
     <br />
     <button @click="goBack">点击返回上一步</button>
