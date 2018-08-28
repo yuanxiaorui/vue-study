@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <base-input class="hello-base-input" label="haha" value="haha2" v-on:focus="onFocus"></base-input>
+    <base-input class="hello-base-input" placeholder="Enter your username" label="haha" value="haha2" v-on:focus.native="onFocus"></base-input>
     <base-select placeholder="please select"></base-select>
     <picker class="hello-picker" placeholder="please enter"></picker>
     <buttons class="hello-button" data-date-picker="activated"></buttons>

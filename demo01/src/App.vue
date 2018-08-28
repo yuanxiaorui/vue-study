@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!-- <HelloWorld /> -->
+    <table>
+    <custom-component05></custom-component05>
+    </table>
   </div>
 </template>
 
