@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>将原生事件绑定到自定义组件</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p>示例1：</p>
+        <div>
+            <button @click="changeRed">变红</button>
+            <my-custom-btn @click.native="changeBlue"></my-custom-btn>
+            <div :class="box"></div>
+        </div>
+        <p>示例2：</p>
+        <base-input :label="label" :value="3333" placeholder="请输入" @focus="onFocus"></base-input>
+    </div>
+    <script>
+        Vue.component('MyCustomBtn', {
+            template: `<div class="btn">
+                        <button>变蓝</button>
+                    </div>`
+        })
+        Vue.component('base-input',{
+            inheritAttrs: false,
+            props: ['label','value'],
+            computed:{
+                inputListeners:function(){
+                    // debugger
+                    var vm = this;
+                    console.log(this.$listeners);
+                    //创建一个新的对象，包含原有的属性和新属性
+                    return Object.assign({},
+                        this.$listeners,
+                        {
+                            // 然后我们添加自定义监听器，
+                            // 或覆写一些监听器的行为(input是一个事件)
+                            input:function(event){
+                                vm.$emit('input', event.target.value);
+                            },
+                            focus:function(event){
+                                vm.$emit('focus', event.target.value);
+                            }
+                        }
+                    )
+                }
+            },
+            template:`
+                <label>
+                    {{ label }}
+                    <input
+                        v-bind="$attrs"
+                        v-bind:value="value"
+                        v-on="inputListeners"
+                    >
+                </label>
+            `
+        })
+        var app = new Vue({
+            el: '#app',
+            data: {
+                box: 'yellow',
+                label:'请点击'
+            },
+            methods: {
+                changeRed() {
+                    this.box = 'red'
+                },
+                changeBlue() {
+                    this.box = 'blue'
+                },
+                onFocus(){
+                    console.log('doSomething...')
+                }
+            }
+        })
+    </script>
+    <style scoped>
+        .yellow {
+            background: yellow;
+            width: 200px;
+            height: 200px;
+        }
+
+        .red {
+            background: red;
+            width: 200px;
+            height: 200px;
+        }
+
+        .blue {
+            background: blue;
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</body>
+
+</html>

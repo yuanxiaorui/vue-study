@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.1/vuex.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <p>
+                <input type="text" v-model.trim="input">
+                <a href="javascript:;" @click="createHandler">Create</a></p>
+            <ol>
+                <li v-for="content in contents">
+                    {{content.content}}
+                    <a href="javascript:;">Update</a>
+                    <a href="javascript:;" @click="deleteHandler(content.id)">Delete</a>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <script>
+    new Vue({
+        el:'#app',
+        data: {
+            input:'',
+            contents:[]
+        },
+        mounted() {
+            axios.get('http://localhost:3000/contents').then((res) => {
+                this.contents = res.data
+            })
+        },
+        methods: {
+            createHandler() {
+                if(!this.input) return;
+                axios.post('http://localhost:3000/contents',{
+                    content: this.input
+                }).then(res => {
+                    this.input = ''
+                    this.contents.push(res.data)
+                })
+            },
+            deleteHandler(id) {
+                axios.delete(`http://localhost:3000/contents/${id}`).then(res => {
+                    console.log(res)
+                    this.contents.splice(,1)
+                })
+            }
+        }
+    })
+    </script>
+</body>
+</html>

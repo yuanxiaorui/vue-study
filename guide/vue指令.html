@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div v-if="loading">1、测试if指令</div>
+        <div v-show="loading2">2、测试show指令</div>
+
+        <p>3、测试v-for列表:</p>
+        <ul>
+            <li v-for="item in color">{{item}}</li>
+        </ul>
+        <ul>
+            <li v-for="item in home">{{item.father}}</li>
+        </ul>
+
+        <p>4、测试v-on指令：</p>
+        <button id="info">js方式点击事件</button>
+        <button v-on:click="getClick">vue方式点击事件</button>
+    </div>
+    <script>
+        var app = new Vue({
+            el:'#app',
+            data: {
+                loading: true,
+                loading2: false,
+                color:['red','yellow','blue'],
+                home:[{father:'zhangsan'},{father:'lisi'}]
+            },
+            methods: {
+                getClick(){
+                    alert('vue方式点击')
+                }
+            }
+        })
+        document.getElementById('info').onclick=function() {
+            alert('js方式点击')
+        }
+    </script>
+</body>
+</html>
