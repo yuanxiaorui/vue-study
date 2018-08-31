@@ -12,16 +12,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 </head>
 <body>
+    
     <div id="app">
         <div>
             <p>
                 <input type="text" v-model.trim="input">
                 <a href="javascript:;" @click="createHandler">Create</a></p>
             <ol>
-                <li v-for="content in contents">
+                <li v-for="(content,index) in contents">
                     {{content.content}}
                     <a href="javascript:;">Update</a>
-                    <a href="javascript:;" @click="deleteHandler(content.id)">Delete</a>
+                    <a href="javascript:;" @click="deleteHandler(index)">Delete</a>
                 </li>
             </ol>
         </div>
@@ -48,10 +49,11 @@
                     this.contents.push(res.data)
                 })
             },
-            deleteHandler(id) {
-                axios.delete(`http://localhost:3000/contents/${id}`).then(res => {
+            deleteHandler(index) {
+                let target = this.contents[index]
+                axios.delete(`http://localhost:3000/contents/${target.id}`).then(res => {
                     console.log(res)
-                    this.contents.splice(,1)
+                    this.contents.splice(index,1)
                 })
             }
         }
