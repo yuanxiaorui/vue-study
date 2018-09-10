@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    #app {
+      width: 600px;
+      margin: 10px auto;
+    }
+
+    .tb {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    .tb th {
+      background-color: #0094ff;
+      color: white;
+    }
+
+    .tb td,
+    .tb th {
+      padding: 5px;
+      border: 1px solid black;
+      text-align: center;
+    }
+
+    .add {
+      padding: 5px;
+      border: 1px solid black;
+      margin-bottom: 10px;
+    }
+  </style>
+<script src="js/vue.js"></script>
+<script src="js/axios.js"></script>
+<script src="js/moment.js"></script>
+</head>
+
+<body>
+<div id="app">  
+  <div class="add">
+    品牌名称:
+    <input type="text" v-model="name">
+    <input type="button" value="添加" @click="handleAdd">
+  </div>
+
+  <div class="add">
+    品牌名称:
+    <input type="text" placeholder="请输入搜索条件" v-model="searchKey">
+  </div>
+
+  <div>
+    <table class="tb">
+      <tr>
+        <th>编号</th>
+        <th>品牌名称</th>
+        <th>创立时间</th>
+        <th>操作</th>
+      </tr>
+      <tr v-for="(item,index) in list" :key="item.id">
+        <td>{{index+1}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.date|formateTime('YYYY-MM-DD HH:mm:ss')}}</td>
+        <td>
+          <a href="#" @click.prevent="handleDelete(item.id)">删除</a>
+          <a href="#" @click.prevent="handleModify(item.id)">修改</a>
+        </td>
+      </tr>
+      <tr v-if="list.length === 0">
+        <td colspan="4">没有品牌数据</td>
+      </tr>
+    </table>
+  </div>
+</div>
+  <script>
+    Vue.filter('formateTime', function(value, fmtString) {
+      if(!value || value.length === 0) {
+        return ''
+      }
+      return moment(value).format(fmtString);
+    })
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      list: [],
+      searchKey: '',
+      name: ''
+    },
+    mounted() {
+      this.loadData()
+    },
+    methods: {
+      //get展示列表
+      loadData() {
+        axios.get('http://localhost:3000/brands')
+        .then((res) => {
+          this.list = res.data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      },
+      //删除
+      handleDelete(id) {
+        if(!confirm('确认删除吗？')){
+          return false
+        }
+        axios.delete(`http://localhost:3000/brands/${id}`)
+        .then((res) => {
+          if (res.status === 200) {
+            alert('删除成功！')
+            this.loadData()
+          } else {
+            alert('删除失败！')
+          }
+        })
+      },
+      handleModify(id) {
+        if (!confirm('确定要修改吗？')) {
+          return false
+        }
+        var data = {
+          name: `zhangsan${id}`,
+          date: new Date()
+        }
+        axios.put(`http://localhost:3000/brands/${id}`,data)
+          .then((res) => {
+            console.log(res)
+            if (res.status === 200) {
+              alert('修改成功！')
+              this.loadData()
+            } else {
+              alert('修改失败！')
+            }
+          })
+      },
+      //添加
+      handleAdd() {
+        var data = {
+          name: this.name,
+          date: new Date()
+        }
+        axios.post('http://localhost:3000/brands', data)
+        .then(res => {
+          if(res.status === 201) {
+            alert('添加成功')
+            this.loadData()
+          }else {
+            alert('添加失败！')
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
+    },
+    watch: {
+      searchKey() {
+        axios.get(`http://127.0.0.1:3000/brands?name_like=${this.searchKey}`)
+        .then((res) => {
+          if(res.status ===200) {
+            this.list = res.data
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
+    }
+  })
+  </script>
+</body>
+</html>

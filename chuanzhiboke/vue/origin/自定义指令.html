@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- <input type="text" v-focus /> -->
+        <!-- <input type="text" v-focus2 /> -->
+        <input type="text" v-focus3:abc="msg" />
+    </div>
+    <script>
+        Vue.directive('focus', {
+            inserted: function (el) {
+                el.focus()
+            }
+        })
+    var vm = new Vue({
+        el:'#app',
+        directives: {
+            focus2: {
+                inserted: function (el) {
+                    el.focus()
+                }
+            },
+            focus3: {
+                inserted: function (el,binding) {
+                    el.focus()
+                    el.value = binding.value
+                    console.log(binding)
+                },
+                update: function (el,binding) {
+                    el.value = binding.value
+                }
+            }
+        },
+        data: {
+            msg: 'Hello自定义指令传参'
+        }
+    })
+    </script>
+</body>
+</html>

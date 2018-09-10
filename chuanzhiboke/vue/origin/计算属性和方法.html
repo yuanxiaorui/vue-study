@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 方法 -->
+        {{fnTest()}}<br>
+        {{fnTest()}}<br>
+        {{fnTest()}}<br>
+
+        <hr />
+        <!-- 计算属性 -->
+         {{cTest}}<br> 
+         {{cTest}}<br> 
+         {{cTest}}
+        <br>
+    </div>
+    <script>
+    var vm = new Vue({
+        el:'#app',
+        data: {
+            msg:'Hello world!'
+        },
+        computed: {
+           cTest() {
+               console.log('计算属性')
+               return new Date()
+           }
+        },
+        methods: {
+            fnTest() {
+                console.log('方法')
+                return new Date()
+            }
+        }
+    })
+    </script>
+</body>
+</html>

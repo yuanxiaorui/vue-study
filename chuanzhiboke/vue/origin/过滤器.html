@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+    <script src="js/moment.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>局部过滤器：</p>
+        {{time|fmtDate}}<br />
+        <p>全局过滤器：</p>
+        {{time|fmtDate2}}<br />
+        <p>过滤器传参：</p>
+        {{time|fmtDate3('YY-MM-DD HH:mm:ss')}}
+    </div>
+    <script>
+        Vue.filter('fmtDate2',function (value) {
+            return moment(value).format('YYYY--MM--DD HH:mm:ss')
+        })
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            time: new Date()
+        },
+        filters: {
+            fmtDate(value) {
+                return moment(value).format('YY--MM--DD HH:mm:ss')
+            },
+            fmtDate3(value,fmtString) {
+                return moment(value).format(fmtString)
+            }
+        }
+    })
+    </script>
+</body>
+</html>
