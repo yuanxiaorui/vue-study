@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="css/animate.css" rel="stylesheet"/>
+    <script src="js/vue.js"></script>
+    <style>
+    body{
+        margin:0;
+        padding: 0px
+    }
+    #box {
+        width:100px;height:100px;background-color:red;
+    }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button @click="isShow=!isShow">按钮</button>
+        
+        <transition 
+        enter-active-class="animated lightSpeedIn"
+        leave-active-class="animated lightSpeedOut">
+            <div id="box" v-show="isShow"></div>
+        </transition>
+    </div>
+    <script>
+    var vm = new Vue({
+        el:'#app',
+        data: {
+            isShow: true
+        }
+    })
+    </script>
+</body>
+</html>

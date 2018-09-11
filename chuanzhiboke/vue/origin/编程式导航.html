@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/vue.js"></script>
+    <script src="js/vue-router.js"></script>
+    <style>
+    .router-link-exact-active{color:red}
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 创建列表 -->
+        <!-- <a href="#/home">home</a><br />
+        <a href="#/users">users</a><br />
+        <a href="#/goods">goods</a><br /> -->
+
+        <!-- router-link 会渲染成a标签，并且当前显示的项会自带两个类样式，可以做当前项高亮显示 -->
+        <router-link to="/">首页</router-link>
+        <router-link to="/users">用户管理</router-link>
+        <router-link to="/goods">商品管理</router-link>
+        <!-- <router-link :to="'/goods/' + id">商品详情</router-link> -->
+        <router-link :to="{name:'detail',params:{id:id}}">商品详情</router-link>
+
+
+            <br >
+            <button @click="handleClick">跳转</button>
+
+        <!-- 2. 占位，给路由匹配的组件占位 -->
+        <router-view></router-view>
+    </div>
+    <script>
+    var Home = {
+        template: '<div>home</div>'
+    }
+    var Users = {
+        template: '<div>users</div>'
+    }
+    var Goods = {
+        template: '<div>goods</div>'
+    }
+    var Details = {
+        props:['id'],
+        template: '<div>Details:{{id}}</div>'
+    }
+    var router = new VueRouter({
+        //路由规则
+        routes: [
+            {path: '/', redirect:'/home' },
+            {path:'/home',component:Home},
+            {path:'/users',component:Users},
+            {path:'/goods',component:Goods},
+            {name:'detail',path:'/goods/:id',component: Details,props:true}
+        ]
+    })
+    var vm = new Vue({
+        el:'#app',
+        router,
+        data:{
+            id: 5
+        },
+        methods: {
+            handleClick() {
+                this.$router.push({name:'detail',params:{id:this.id}})
+            }
+        }
+    })
+    </script>
+</body>
+</html>
