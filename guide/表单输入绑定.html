@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 示例1： -->
+    <input type="text" v-model="message" placeholder="edit me">
+    <p>Message is:{{message}}</p>
+
+    <input type="text" placeholder="edit me" :value="message2" @input="message2=$event.target.value">
+    <p>Message is:{{message2}}</p>
+
+    <!-- 示例2： -->
+
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        message: 'uuuu',
+        message2: 'aaa'
+      }
+    })
+  </script>
+
+</body>
+
+</html>
