@@ -11,15 +11,39 @@
 
 <body>
   <div id="app">
-    <!-- 示例1： -->
+    <!-- 单行文本： -->
     <input type="text" v-model="message" placeholder="edit me">
     <p>Message is:{{message}}</p>
 
     <input type="text" placeholder="edit me" :value="message2" @input="message2=$event.target.value">
     <p>Message is:{{message2}}</p>
 
-    <!-- 示例2： -->
+    <!-- 多行文本： -->
+    <textarea v-model="message3" placeholder="请输入"></textarea>
+    <p>Message is:{{message3}}</p>
+    <textarea :value="message4" @input="message4=$event.target.value" placeholder="请输入"></textarea>
 
+    <hr />
+    <!-- 单选框 -->
+    <div>
+      <input type="radio" id="one" value="One" v-model="picked" />
+      <label for="one">One</label>
+      <br>
+      <input type="radio" id="two" value="Two" v-model="picked" />
+      <label for="two">Two</label>
+      <br>
+      <span>Picked:{{picked}}</span>
+    </div>
+
+    <div>
+      <input type="radio" id="one2" value="One" :checked="picked2" @change="picked2=$event.target.value" />
+      <label for="one2">One</label>
+      <br>
+      <input type="radio" id="two2" value="Two" :checked="picked2" @change="picked2=$event.target.value" />
+      <label for="two2">Two</label>
+      <br>
+      <span>Picked:{{picked2}}</span>
+    </div>
   </div>
 
   <script>
@@ -27,7 +51,11 @@
       el: '#app',
       data: {
         message: 'uuuu',
-        message2: 'aaa'
+        message2: 'aaa',
+        message3: 'bbbb',
+        message4: 'cccc',
+        picked: '',
+        picked2: ''
       }
     })
   </script>
